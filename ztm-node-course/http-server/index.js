@@ -13,22 +13,33 @@ const friends = [
 
 const server = http.createServer((req, res) => {
   const items = req.url.split('/');
-  if(items[1] === 'friends'){
+  if(req.method === 'POST' && items[1] === 'friends'){
+    req.on('data', (data) => {
+      const friend = data.toString();
+      console.log('Request:', friend);
+      friends.push(JSON.parse(friend));
+      req.pipe(res);
+    })
+  }
+  else if(req.method === 'GET' && items[1] === 'friends'){
     // res.writeHead(200, {
     //   'Content-Type': 'application/json',
     // });
-    if(Number(items[2]) === 0){
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(friends[0]));
+    if(items.length === 3){
+      const index = Number(items[2]);
+      if(index < friends.length){
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(friends[index]));
+      }
     }
-    else if(Number(items[2]) === 1){
+    else {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(friends[1]));
+      res.end(JSON.stringify(friends));
     }
   }
-  else if(items[1] === 'messages'){
+  else if(req.method === 'GET' && items[1] === 'messages'){
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
