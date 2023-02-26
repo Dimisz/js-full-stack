@@ -14,12 +14,32 @@ const friends = [
   }
 ];
 
+// logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   console.log(`${req.method} ${req.url}`);
   next();
   const delta = Date.now() - start;
   console.log(`Request took ${delta} milliseconds`);
+});
+
+//parsing middleware
+app.use(express.json());
+
+app.post('/friends', (req, res) => {
+  if(!req.body.name) {
+    res.status(400).json({
+      error: 'Missing friend name'
+    });
+  }
+  else {
+    const newFriend = {
+      name: req.body.name,
+      id: friends.length
+    };
+    friends.push(newFriend);
+    res.json(newFriend);
+  }
 });
 
 app.get('/friends', (req, res) => {
