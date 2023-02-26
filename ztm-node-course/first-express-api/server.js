@@ -3,8 +3,19 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hi there');
+const friends = [
+  {
+    id: 0, 
+    name: 'Albert Einstein'
+  },
+  {
+    id: 1, 
+    name: 'Sir Isaac Newton'
+  }
+];
+
+app.get('/friends', (req, res) => {
+  res.json(friends);
 });
 
 app.get('/messages', (req, res) => {
