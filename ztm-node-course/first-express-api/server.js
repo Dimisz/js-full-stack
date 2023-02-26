@@ -1,10 +1,15 @@
 const express = require('express');
+const path = require('path');
 
-const messagesController = require('./controller/messages.controller');
-const friendsController = require('./controller/friends.controller');
+// routes
+const friendsRouter = require('./routes/friends.router');
+const messagesRouter = require('./routes/messages.router');
 
 const app = express();
 const PORT = 3000;
+
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
 
 
 // logging middleware
@@ -16,16 +21,20 @@ app.use((req, res, next) => {
   console.log(`Request took ${delta} milliseconds`);
 });
 
+app.use('/site', express.static(path.join(__dirname, 'public')));
 //parsing middleware
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.render('index', {
+    title: 'My Friends are very clever',
+    caption: 'Let\'s go skiing'
+  })
+});
 
-app.post('/friends', friendsController.postFriend);
 
-app.get('/friends', friendsController.getAllFriends);
+app.use('/friends', friendsRouter);
+app.use('/messages', messagesRouter);
 
-app.get('/friends/:friendId', friendsController.getAFriend);
-
-app.get('/messages', messagesController.getMessages);
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 })
