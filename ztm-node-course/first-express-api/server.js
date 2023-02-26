@@ -14,6 +14,14 @@ const friends = [
   }
 ];
 
+app.use((req, res, next) => {
+  const start = Date.now();
+  console.log(`${req.method} ${req.url}`);
+  next();
+  const delta = Date.now() - start;
+  console.log(`Request took ${delta} milliseconds`);
+});
+
 app.get('/friends', (req, res) => {
   res.json(friends);
 });
@@ -33,7 +41,7 @@ app.get('/friends/:friendId', (req, res) => {
       error: 'Friend does not exist'
     });
   }
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
