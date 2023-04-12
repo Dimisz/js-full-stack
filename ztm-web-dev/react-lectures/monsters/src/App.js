@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {robots} from './robots';
 
-import Card from './components/Card';
+import SearchBar from './components/SearchBar';
+import CardList from './components/CardList';
 
 const App = () => {
-  const renderedRobots = robots.map((robot) => {
-    return (<Card 
-              key={robot.id} 
-              id={robot.id}
-              name={robot.name} 
-              email={robot.email} 
-            />);
-  });
+  const [filteredRobots, setFilteredRobots] = useState(robots);
+
+  const onSearch = (e) => {
+    setFilteredRobots(robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(e.target.value) || robot.email.toLowerCase().includes(e.target.value);
+    }))
+  }
 
   return(
-    <>{renderedRobots}</>
+    <>
+      <SearchBar handleSearch={onSearch} />
+      <CardList robots={filteredRobots}/>
+    </>
   );
 }
 
