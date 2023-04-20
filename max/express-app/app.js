@@ -3,15 +3,19 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+
+
 const PORT = 3000;
 const app = express();
+
+app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const adminRoutes = require('./routes/admin');
+const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-app.use('/admin', adminRoutes);
+app.use('/admin', adminData.routes);
 app.use(shopRoutes);
 
 app.use('/', (req, res, next) => {
