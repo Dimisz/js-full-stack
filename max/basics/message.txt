@@ -1,1 +1,1 @@
-a+new+message
+test+message
