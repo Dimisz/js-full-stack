@@ -9,7 +9,7 @@ const products = [];
 router.get('/add-product', (req, res, next) => {
   // console.log('in another middleware');
   // res.sendFile(path.join(__dirname, '..', 'views', 'add-product.html'));
-  res.render('add-product', {docTitle: 'Add a product'});
+  res.render('add-product', {docTitle: 'Add a product', path: '/admin/add-product'});
 });
 
 router.post('/add-product', (req, res, next) => {
@@ -19,5 +19,5 @@ router.post('/add-product', (req, res, next) => {
 
 module.exports = {
   routes: router, 
-  products
+  products: products
 };
