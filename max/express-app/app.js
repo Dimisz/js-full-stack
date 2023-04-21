@@ -11,15 +11,15 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const pageNotFoundController = require('./controllers/404');
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use('/', (req, res, next) => {
-  res.status(404).render('404', {docTitle: '404 Error', path: null});
-});
+app.use('/', pageNotFoundController.get404);
 
 app.listen(PORT, () => {
   console.log(`listening on port: ${PORT}`);
