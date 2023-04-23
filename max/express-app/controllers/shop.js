@@ -1,5 +1,5 @@
-const { render } = require('pug');
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
@@ -38,6 +38,15 @@ exports.getCart = (req, res, next) => {
     path: '/cart'
   });
 }
+
+exports.postCart = (req, res, next) => {
+  const productID = req.body.productID;
+  Product.findById(productID, (product) => {
+    console.log(`got product price: ${product.price} for id ${productID}`);
+    Cart.addProduct(productID, product.price);
+  });
+  res.redirect('/');
+};
 
 exports.getCheckout = (req, res, next) => {
   res.render('shop/checkout', {
