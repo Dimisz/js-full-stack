@@ -12,49 +12,51 @@ const friends = [
   },
   {
     id: 3,
-    name: 'Nikola Tesla'
+    name: 'Thomas Edison'
   },
-]
-const server = http.createServer((req, res) => {
-  const reqParams = req.url.split('/');
-  if(req.method === 'GET' && reqParams[1] === 'friends'){
+  {
+    id: 4,
+    name: 'Marie Curie'
+  }
+];
+
+const server = http.createServer();
+
+server.on('request', (req, res) => {
+  const items = req.url.split('/');
+  if(req.method === 'POST' && items[1] === 'friends'){
+    req.on('data', (data) => {
+      const friend = data.toString();
+      console.log('Request: ', friend);
+      friends.push(JSON.parse(friend));
+    });
+    req.pipe(res);
+  }
+  else if(req.method === 'GET' && items[1] === 'friends'){
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
-    if(reqParams.length >= 3){
-      if(Number(reqParams[2]) < friends.length){
-        res.end(JSON.stringify(friends[+reqParams[2]]));
-      }
-      else{
-        res.end(`No friend number ${reqParams[2]}`)
-      }
+    if(items.length === 3){
+      const friendIndex = Number(items[2]);
+      res.end(JSON.stringify(friends[friendIndex]));
     }
     else{
       res.end(JSON.stringify(friends));
     }
   }
-  else if(req.method === 'GET' && reqParams[1] === 'messages'){
-    res.write('<html>');
-    res.write('<body>');
-    res.write('<h1>Messages page update</h1>');
-    res.write('</body>');
-    res.write('</html>');
-    res.end();
+  else if(req.method === 'GET' && items[1] === 'messages'){
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end('<html><body><h1>Messages</h1></body></html>');
   }
-  else if(req.method === 'POST' && reqParams[1] === 'friends'){
-    req.on('data', (data) => {
-      const friend = data.toString();
-      console.log('Request:', friend);
-      friends.push(JSON.parse(friend));
-      req.pipe(res);
-    })
-  }
-  else{
+  else {
     res.statusCode = 404;
-    res.end();
+    res.setHeader('Content-Type', 'text/html');
+    res.end('<html><body><h1>Page Not Found</h1></body></html>');
   }
+  
 });
 
 server.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  console.log(`listening on port: ${PORT}`);
 });
