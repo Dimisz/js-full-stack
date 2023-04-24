@@ -10,7 +10,9 @@ const messagesRouter = require('./routes/messages.router');
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
-})
+});
+
+app.use('/site', express.static('public'));
 app.use(express.json());
 
 
