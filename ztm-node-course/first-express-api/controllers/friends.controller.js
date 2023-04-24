@@ -1,17 +1,4 @@
-const friends = [
-  {
-    id: 0,
-    name: 'Albert Einstein'
-  },
-  {
-    id: 1,
-    name: 'Sir Isaac Newton'
-  },
-  {
-    id: 2,
-    name: 'Stephen Hockings'
-  },
-];
+const friends = require('../models/friends.model');
 
 function postFriend(req, res){
   if(!req.body.name){
