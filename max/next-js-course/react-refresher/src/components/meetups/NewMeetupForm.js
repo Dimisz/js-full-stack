@@ -6,16 +6,22 @@ import styles from './NewMeetupForm.module.css';
 import Card from '../ui/Card';
 
 const NewMeetupForm = ({addMeetup}) => {
-  const [title, setTitle] = useState('');
-  const [address, setAddress] = useState('');
+  const titleRef = useRef();
+  const addressRef = useRef();
+
   const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Stadtbild_M%C3%BCnchen.jpg/2560px-Stadtbild_M%C3%BCnchen.jpg');
-  const [description, setDescription] = useState('');
+  const descriptionRef = useRef();
+  
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMeetup = {
-      title, address, image, description, id: ReactId()
+      title: titleRef.current.value, 
+      address: addressRef.current.value, 
+      image, 
+      description: descriptionRef.current.value, 
+      id: ReactId()
     };
     addMeetup(newMeetup);
     setSubmitted(true);
@@ -33,8 +39,7 @@ const NewMeetupForm = ({addMeetup}) => {
             type="text" 
             required 
             id="title" 
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            ref={titleRef}
           />
         </div>
         <div className={styles.control}>
@@ -53,8 +58,7 @@ const NewMeetupForm = ({addMeetup}) => {
             type="text" 
             id="adress" 
             required
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            ref={addressRef}
           />
         </div>
         <div className={styles.control}>
@@ -63,8 +67,7 @@ const NewMeetupForm = ({addMeetup}) => {
             id="adress" 
             required 
             rows="5"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            ref={descriptionRef}
           ></textarea>
         </div>
         <div className={styles.actions}>
