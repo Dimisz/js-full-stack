@@ -1,30 +1,24 @@
-import { ReactId } from 'reactjs-id';
 import { useState, useRef } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import styles from './NewMeetupForm.module.css';
 import Card from '../ui/Card';
 
-const NewMeetupForm = ({addMeetup}) => {
+const NewMeetupForm = ({onAddMeetup}) => {
   const titleRef = useRef();
   const addressRef = useRef();
 
   const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Stadtbild_M%C3%BCnchen.jpg/2560px-Stadtbild_M%C3%BCnchen.jpg');
   const descriptionRef = useRef();
   
-  const [submitted, setSubmitted] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMeetup = {
       title: titleRef.current.value, 
       address: addressRef.current.value, 
       image, 
-      description: descriptionRef.current.value, 
-      id: ReactId()
+      description: descriptionRef.current.value
     };
-    addMeetup(newMeetup);
-    setSubmitted(true);
+    onAddMeetup(newMeetup);
   }
 
   return(
@@ -73,7 +67,6 @@ const NewMeetupForm = ({addMeetup}) => {
         <div className={styles.actions}>
           <button>Add Meetup</button>
         </div>
-        {submitted && <Redirect to='/'></Redirect>}
       </form>
     </Card>
   );
