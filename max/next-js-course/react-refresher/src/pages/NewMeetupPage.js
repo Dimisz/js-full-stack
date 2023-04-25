@@ -1,6 +1,11 @@
-const NewMeetupPage = () => {
+import NewMeetupForm from "../components/meetups/NewMeetupForm";
+
+const NewMeetupPage = ({addMeetup}) => {
   return(
-    <h1>New meetup page</h1>
+    <section>
+      <h1>Add New Meetup</h1>
+      <NewMeetupForm addMeetup={addMeetup} />
+    </section>
   );
 }
 
