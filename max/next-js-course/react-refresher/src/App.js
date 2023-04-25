@@ -16,13 +16,14 @@ const App = () => {
     setTodos(filteredTodos);
   }
 
+
   const renderedTodos = todos.map((todo) => {
     return (
       <Todo 
         key={todo.id} 
         id={todo.id}
         text={todo.text} 
-        deleteHandler={handleDelete}
+        handleDelete={handleDelete}
       />
     );
   });
